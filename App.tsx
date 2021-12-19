@@ -1,20 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+// Screens
+import SearchScreen from "./src/screen/SearchScreen";
+import HomeScreen from "./src/screen/HomeScreen";
+
+// Stack
+const Stack = createNativeStackNavigator();
+
+const SearchScreenOptions = {
+  title: 'BusinessSearch',
+  headerStyle: {
+    backgroundColor: '#f4511e',
+  },
+  headerTitleAlign: 'center',
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  }
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer >
+      <Stack.Navigator initialRouteName="SearchScreen">
+        <Stack.Screen name="SearchScreen" component={SearchScreen} options={SearchScreenOptions} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen}  />
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

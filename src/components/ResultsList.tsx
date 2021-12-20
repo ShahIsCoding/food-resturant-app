@@ -1,19 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import ResultsCard from "./ResultCard";
 
-
-const ResultsList = ({ title, results }) => {
+const ResultsList = ({ title, results, navigation }) => {
+    if(!results.length){
+        return null;
+    }
     return (
-        <View>
-            <Text style={styles.title}>{title},{results.length}</Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>{title}</Text>
+            <FlatList
+                horizontal
+                data={results}
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(result) => result.id}
+                renderItem={({ item }) => {
+                    return (
+                        <TouchableOpacity onPress={() => navigation.navigate('ResultShowScreen', { id: item.id,name:item.name})}>
+                            <ResultsCard result={item} />
+                        </TouchableOpacity>
+                    );
+                }}
+            />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    title:{
-        fontSize:20,
-        fontWeight:'bold',
+    container: {
+        marginBottom: 10,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginLeft: 15,
+        marginBottom: 5
     }
 })
 export default ResultsList;

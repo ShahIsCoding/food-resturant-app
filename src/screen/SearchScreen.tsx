@@ -1,28 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 import SearchBar from "../components/SearchBar";
 import useResults from "../hooks/useResults";
 import ResultsList from "../components/ResultsList";
 
-function SearchScreen() {
+function SearchScreen({ navigation }) {
     const [search, setSearch] = useState('');
-    const [searchApi,  results, ErrorMessage ] = useResults();
+    const [searchApi, results, ErrorMessage] = useResults();
 
 
     const filterResults = price => {
-        return results.filter(result => {
+        const res = results.filter(result => {
             return result.price === price
         });
+        return res;
+
     };
 
     return (
         <View style={styles.container}>
             <SearchBar searchValue={search} onSearchChange={setSearch} onSearchSubmit={() => searchApi(search)} />
-            <Text>Screen Screen {search}  {results.length}</Text>
-            <ResultsList title="Cost Effective" results={filterResults('$')} />
-            <ResultsList title="Bit Pricier" results={filterResults('$$')} />
-            <ResultsList title="Big Spender" results={filterResults('$$$')} />
+            <ScrollView>
+                <ResultsList title="Cost Effective" results={filterResults("$")} navigation={navigation} />
+                <ResultsList title="Bit Pricier" results={filterResults("$$")} navigation={navigation} />
+                <ResultsList title="Big Spender" results={filterResults("$$$")} navigation={navigation} />
+            </ScrollView>
         </View>
     );
 }
@@ -30,6 +33,7 @@ function SearchScreen() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1
     }
 });
 
